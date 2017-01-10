@@ -17,7 +17,11 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.sikuli.script.Screen;
-
+/**
+ * 2017 is here!
+ * @author ward
+ *
+ */
 public class ScriptReader {
 	
 	public static void main(String[] args) {
