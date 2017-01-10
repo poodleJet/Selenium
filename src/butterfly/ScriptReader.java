@@ -15,13 +15,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.sikuli.script.Screen;
-/**
- * 2017 is here!
- * @author ward
- *
- */
+ 
 public class ScriptReader {
 	
 	public static void main(String[] args) {
@@ -66,9 +61,13 @@ public class ScriptReader {
 						String[] details = foo.split("	");
 						
 						// Ignore comments (first character #)
-						if (!details[0].startsWith("#")) {
+						if (!details[0].startsWith("#")) {														
 							
-							Test.doze(200); // Slow execution
+							if(args[0] == "DEBUG") {
+								System.in.read();	// Wait for the user to press any character							
+							} else {
+								Test.doze(200); // Slow execution	
+							}
 						
 							switch (details[0]) {
 								case "Open":

@@ -506,12 +506,14 @@ public class Test {
 			return 2;
 		}
 		
-	  Dimension dimension = w.getSize();
+//	  Dimension dimension = w.getSize();
 	  
+	  /*
 	  int xPos = dimension.getWidth() / 2;
 	  int yPos = dimension.getHeight() * 3 / 2;
 	  
 	  Actions action = new Actions(driver);
+	  */
 	  
 	  try {
 		  w.click();
