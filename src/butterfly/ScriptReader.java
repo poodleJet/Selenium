@@ -63,12 +63,12 @@ public class ScriptReader {
 						// Ignore comments (first character #)
 						if (!details[0].startsWith("#")) {														
 							
-							if(args[0] == "DEBUG") {
+							if(args[0].equals("DEBUG")) {
 								System.in.read();	// Wait for the user to press any character							
-							} else {
-								Test.doze(200); // Slow execution	
 							}
-						
+							
+							//Test.doze(200); // Slow execution	
+													
 							switch (details[0]) {
 								case "Open":
 									try {
@@ -152,6 +152,12 @@ public class ScriptReader {
 									break;
 								case "ClickFirst":
 									failure = Test.clickDown(driver, details[1], details[2]);
+									break;
+								case "ListSize":
+									failure = Test.listSize(driver, details[1]);
+									break;
+								case "Lowest":
+									failure = Test.Lowest();
 									break;
 								case "Verify":
 									failure = Test.verifyText(driver, details[1], details[2]);

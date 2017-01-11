@@ -4,11 +4,9 @@ import java.nio.file.*;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
-
+import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.InvalidElementStateException;
@@ -367,6 +365,54 @@ public class Test {
 	  
   }
   
+  public static List<WebElement> list(WebDriver driver, String idString) {
+	  
+	  // For the moment assume listable objects are easy to find.
+	  
+	  try {
+		  String parts[] = idString.split("=");
+		  
+		  if (parts.length == 1) {
+			  return driver.findElements(By.id(idString));
+		  } else {
+				if (parts[0].equals("css")) {
+					return driver.findElements(By.cssSelector(parts[1]));
+				} else if (parts[0].equals("name")) {
+					return driver.findElements(By.name(parts[1]));
+				} else if (parts[0].equals("link")) {
+					return driver.findElements(By.linkText(parts[1]));
+				} else if (parts[0].equals("xpath")) {
+					return driver.findElements(By.xpath(idString.substring(7)));
+				} else if (parts[0].equals("class")) {
+					return driver.findElements(By.className(parts[1]));
+				} else {
+					log("Illegal element list specification " + idString);
+					return null;						
+				}			  
+		  }
+	  } catch (Exception e) {
+			fail("Error found looking for objects " + idString);
+			fail(e.toString());
+			Shoot(driver);
+			e.printStackTrace();		  
+	  }
+	  
+	  return null;
+  }
+  
+  public static int listSize(WebDriver driver, String idString) {
+	  
+	  List<WebElement> q = list(driver, idString);
+	  
+	  if (q == null) {
+		  return 2;
+	  }
+	  
+	  note("List of " + idString + ": " + q.size());
+	  
+	  return 0;
+  }
+  
   /**
    * WebElement returns a web element which exists, is visible, is active, and 
    * is not in a stale state, so can then be clicked, have text entered, etc.
@@ -679,6 +725,12 @@ public class Test {
 	  return 2;
 	  
   }
+
+
+public static int Lowest() {
+	// TODO Auto-generated method stub
+	return 0;
+}
   
   
 }
