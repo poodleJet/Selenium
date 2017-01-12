@@ -36,7 +36,18 @@ public class ScriptReader {
 		System.setProperty("webdriver.ie.driver", "C:\\Software\\Selenium\\IEDriverServer32.exe");
 		System.setProperty("webdriver.edge.driver","C:\\Software\\Selenium\\MicrosoftWebDriver.exe");
 		System.setProperty("webdriver.ie.logfile", "C:\\temp\\IEDriverServer.log");
-
+		
+		boolean debugMode = false;
+		
+		/*
+		// Do we want to run in debug mode (however that gets implemented)?
+		try {
+			debugMode = args[0].equals("DEBUG");
+		} catch (Exception e) {
+			Test.fail(e.getMessage());
+			// Do nothing, leave debug mode off.
+		} */
+		
 		// Prepare for Selenium commands:
 		WebDriver driver = null;
 		Actions actions = null;
@@ -63,7 +74,7 @@ public class ScriptReader {
 						// Ignore comments (first character #)
 						if (!details[0].startsWith("#")) {														
 							
-							if(args[0].equals("DEBUG")) {
+							if(debugMode) {
 								System.in.read();	// Wait for the user to press any character							
 							}
 							
@@ -138,6 +149,7 @@ public class ScriptReader {
 									break;
 								case "Select":
 									failure = Test.select(driver, details[1], details[2]);
+									break;
 								case "ClickImage":
 									failure = Test.clickImage(screen, details[1]);
 									break;
