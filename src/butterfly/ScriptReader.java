@@ -38,16 +38,7 @@ public class ScriptReader {
 		System.setProperty("webdriver.ie.logfile", "C:\\temp\\IEDriverServer.log");
 		
 		boolean debugMode = false;
-		
-		/*
-		// Do we want to run in debug mode (however that gets implemented)?
-		try {
-			debugMode = args[0].equals("DEBUG");
-		} catch (Exception e) {
-			Test.fail(e.getMessage());
-			// Do nothing, leave debug mode off.
-		} */
-		
+				
 		// Prepare for Selenium commands:
 		WebDriver driver = null;
 		Actions actions = null;
