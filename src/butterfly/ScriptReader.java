@@ -22,6 +22,7 @@ import org.sikuli.script.Screen;
  * @author ward
  *
  */
+@SuppressWarnings("unused")
 public class ScriptReader {
 	
 	public static void main(String[] args) {
