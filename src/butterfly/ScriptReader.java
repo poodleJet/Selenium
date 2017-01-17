@@ -134,11 +134,18 @@ public class ScriptReader {
 								case "Enter":
 									failure = Test.enter(driver, details[1], details[2]);
 									break;
+								case "Set":
+									failure = Test.set(driver, details[1]);
+									break;
+								case "Unset":
+									failure = Test.unset(driver, details[1]);
+									break;
 								case "Click":
 									failure = Test.clickMe(driver, details[1]);
 									break;
 								case "Select":
 									failure = Test.select(driver, details[1], details[2]);
+									break;
 								case "ClickImage":
 									failure = Test.clickImage(screen, details[1]);
 									break;
@@ -159,6 +166,9 @@ public class ScriptReader {
 									break;
 								case "Start":
 									failure = Test.start(details[2]);								
+									break;
+								case "GetRidOf":
+									failure = Test.getRidOf(driver, details[1]);
 									break;
 								case "Check":
 									failure = Test.checkPresent(driver, details[1]);
@@ -184,14 +194,7 @@ public class ScriptReader {
 									break;
 								case "Stop":
 									failure = Test.stop();
-									Runtime.getRuntime().exec("taskkill /F /IM " + browserName);
-									try {
-										
-										driver.quit();
-										driver = null;
-									} catch (Exception e) {
-										// We don't care
-									}
+									killBrowser(browserName, driver);
 									break;
 								default:
 									Test.fail("Script contains unknown command '" + details[0] + "'!");
@@ -204,16 +207,8 @@ public class ScriptReader {
 								// Log error and abort test
 								Test.abort();
 								// Give user 10 seconds to halt suite execution before browser killed.
-								Test.doze(10000);
-								
-								Runtime.getRuntime().exec("taskkill /F /IM " + browserName);
-								
-								try {
-									driver.quit();
-									driver = null;
-								} catch (Exception e) {
-									// We don't care
-								}
+								Test.doze(10000);								
+								killBrowser(browserName, driver);
 								
 								// Move on to the next test (if there is one):
 								
@@ -238,6 +233,37 @@ public class ScriptReader {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	/**
+	 * Kill the browser currently opened for a completed or failed test. If a WerFault.exe popup appears, kill that as well.
+	 * 
+	 * @param browserName
+	 * @param driver
+	 */
+	public static void killBrowser(String browserName, WebDriver driver) {
+		
+		try {
+			Runtime.getRuntime().exec("taskkill /F /IM " + browserName);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}									
+		Test.doze(100);
+		// Get rid of nanny popup e.g. "Firefox funktioniert nicht mehr":
+		try {
+			Runtime.getRuntime().exec("taskkill /F /IM ) WerFault.exe");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {										
+			driver.quit();
+			driver = null;
+		} catch (Exception e) {
+			// We don't care
+		}
 	}
 
 }

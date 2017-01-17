@@ -239,6 +239,52 @@ public class Test {
   }
   
   /**
+   * remove a tick in an input box to de-select it. If there is no tick anyway, do nothing.
+   * @param driver
+   * @param idString
+   * @return
+   */
+  public static int unset(WebDriver driver, String idString) {
+	  
+	  	WebElement w = we(driver, idString);
+	  	
+		if (w == null) {
+			return 2;
+		}
+
+		if (w.isSelected()) {
+			w.click();
+			debug("Unset " + idString);
+		} else {
+			debug(idString + " was already not set");
+		}
+		
+		return 0;
+  }
+  
+  /**
+   * Set a cross in an input box. If there is already a cross there, do nothing.
+   * 
+   */
+  public static int set(WebDriver driver, String idString) {
+	  
+	  	WebElement w = we(driver, idString);
+	  	
+		if (w == null) {
+			return 2;
+		}
+
+		if (!w.isSelected()) {
+			w.click();
+			debug("Set " + idString);
+		} else {
+			debug(idString + " was already set");
+		}
+		
+		return 0;
+  }
+  
+  /**
    * Default invocation of clickMe, with implicit WaitToDisappear = false.
    * @param driver
    * @param idString
@@ -249,7 +295,7 @@ public class Test {
 	  return clickMe(driver, idString, false);
 	  
   }
-    
+  
   /**
    * Click an object on the screen.
    * @param driver
@@ -412,11 +458,18 @@ public class Test {
 					} else if (parts[0].equals("class")) {
 						webElement = driver.findElement(By.className(parts[1]));
 					} else {
-						log("Illegal element specification " + idString);
+						fail("Illegal element specification " + idString);
 						webElement = null;						
 					}
-				}				
-			  	
+				}
+				
+				if (t == 199) {
+					debug(idString + " <" + webElement.getTagName() + "> Displayed: " + webElement.isDisplayed() + " Enabled: " + webElement.isEnabled());
+				}
+				
+				// is the element something we are going to do something with, or is it just an element from which we recover text?
+				//debug(webElement.getText() + " " + webElement.getTagName() + " " + webElement.isEnabled() + " " + webElement.isDisplayed());
+				
 			  	// The element must be enabled and displayed before it can be returned:			  	
 			  	if (webElement.isEnabled() && webElement.isDisplayed()) {
 				  	// Log any element that takes a long time to appear:
@@ -606,6 +659,7 @@ public class Test {
 	  try {
 		  Pattern pattern = new Pattern(image).targetOffset(xOffset, yOffset);		  
 		  Match r = screen.exists(pattern,1);
+		  doze(100);
 		  screen.click(r, 1);
 		  
 		  debug("Clicked image " + imageId);
@@ -616,6 +670,43 @@ public class Test {
 	  }
 	  return 2; // Something failed!
 	  
+  }
+  
+  public static int getRidOf(WebDriver driver, String idString) {
+	  
+	  WebElement webElement;
+	  
+	  doze(100); // Wait for screen to finish painting
+	  
+	  String parts[] = idString.split("=");
+		
+	  try {
+		  if (parts.length == 1) {
+			  webElement = driver.findElement(By.id(idString));
+			} else {
+				if (parts[0].equals("css")) {
+					webElement = driver.findElement(By.cssSelector(parts[1]));
+				} else if (parts[0].equals("name")) {
+					webElement = driver.findElement(By.name(parts[1]));
+				} else if (parts[0].equals("link")) {
+					webElement = driver.findElement(By.linkText(parts[1]));
+				} else if (parts[0].equals("xpath")) {
+					webElement = driver.findElement(By.xpath(idString.substring(7)));
+				} else if (parts[0].equals("class")) {
+					webElement = driver.findElement(By.className(parts[1]));
+				} else {
+					fail("Illegal element specification " + idString);
+					webElement = null;
+					return 0;
+				}
+			}
+		  	webElement.click();
+	  
+	  } catch (Exception e) {
+		  // do Nothing.
+	  }
+		
+	  return 0;	  
   }
   
   public static int clickImage(Screen screen, String imageId, String offset) {
