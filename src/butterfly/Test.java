@@ -228,7 +228,7 @@ public class Test {
 		String s = w.getText();
 		
 		if (s.equals(toCompare)) {
-			pass(idString + " contains exactly '" + Text + "'");
+			pass(idString + " contains exactly '" + s + "'");
 			return 0;
 		}
 		
