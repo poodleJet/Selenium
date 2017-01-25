@@ -228,13 +228,18 @@ public class Test {
 		String s = w.getText();
 		
 		if (s.equals(toCompare)) {
-			pass("Text '" + s + "' found in " + idString);
+			pass(idString + " contains exactly '" + Text + "'");
 			return 0;
-		} else {
-			fail("Text '" + toCompare + "' not found in " + idString + ", found '" + s + "'.");
-			Shoot(driver);
-			return 1;
 		}
+		
+		if (s.contains(toCompare)) {
+			pass("Text '" + toCompare + "' found in " + idString);
+			return 0;			
+		}
+		
+		fail("Text '" + toCompare + "' not found in " + idString + ", found '" + s + "'.");
+		Shoot(driver);
+		return 1;
 	  
   }
   
