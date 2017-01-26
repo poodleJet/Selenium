@@ -187,6 +187,56 @@ public class Test {
   }
   
   /**
+   * Sends a key press to the application.
+   * @param driver
+   * @param keyPressed e.g. ESC
+   * @return
+   */
+  public static int keys(WebDriver driver, String keyPressed) {
+	  
+	  Keys keyToPress;
+	  
+	  switch(keyPressed.toUpperCase()) {
+	  	case "ESC":  keyToPress = Keys.ESCAPE;
+	  		break;
+	  	case "CTRL": keyToPress = Keys.CONTROL;
+	  		break;
+	  	case "BKSP": keyToPress = Keys.BACK_SPACE;
+	  		break;
+	  	case "UP": keyToPress = Keys.ARROW_UP;
+  			break;
+	  	case "DOWN": keyToPress = Keys.ARROW_DOWN;
+  			break;
+	  	case "LEFT": keyToPress = Keys.ARROW_LEFT;
+			break;
+	  	case "RIGHT": keyToPress = Keys.ARROW_RIGHT;
+			break;
+	  	case "ALT": keyToPress = Keys.ALT;
+	  		break;
+	  	case "DEL": keyToPress = Keys.DELETE;
+	  		break;
+	  	case "END": keyToPress = Keys.END;
+	  		break;
+	  	case "HOME": keyToPress = Keys.HOME;
+	  		break;
+	  	case "PGDN": keyToPress = Keys.PAGE_DOWN;
+	  		break;
+	  	case "PGUP": keyToPress = Keys.PAGE_UP;
+	  		break;
+	  	case "TAB": keyToPress = Keys.TAB;
+	  		break;	  			
+	  	default:
+	  		fail("Unknown key " + keyPressed);
+	  		return 2;
+	  }
+	  
+	  Actions action = new Actions(driver);
+	  action.sendKeys(keyToPress);
+	  
+	  return 0;	  	 
+  }
+  
+  /**
    * Returns text from a web element.
    * @param driver
    * @param idString

@@ -177,6 +177,9 @@ public class ScriptReader {
 								case "Log":	//	Write an entry in the log file
 									Test.log(details[1] + " " + details[2]);
 									break;
+								case "Keys": // Press a key such as ESC
+									failure = Test.keys(driver, details[1]);
+									break;
 								case "Note":
 									try {
 										if (details[2].length() > 0) {
